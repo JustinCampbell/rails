@@ -523,4 +523,11 @@ class NamedScopingTest < ActiveRecord::TestCase
     assert_equal 1, SpecialComment.where(body: 'go crazy').created.count
   end
 
+  def test_block_as_body
+    klazz = Class.new(ActiveRecord::Base) do
+      self.table_name = "topics"
+      scope(:approved) { where(approved: true) }
+    end
+    assert klazz.approved.all(&:approved)
+  end
 end

@@ -133,7 +133,12 @@ module ActiveRecord
         #
         #   Article.published.featured.latest_article
         #   Article.featured.titles
-        def scope(name, body, &block)
+        def scope(name, body = nil, &block)
+          unless body
+            body = block
+            block = nil
+          end
+
           unless body.respond_to?(:call)
             raise ArgumentError, 'The scope body needs to be callable.'
           end
